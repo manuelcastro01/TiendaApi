@@ -13,17 +13,27 @@ namespace TiendaServicios.Api.Autor.Controllers
         {
             _context = contexto;
         }
+        [HttpPut]
+        public async Task<bool> EditarRegistro(AutorLibro autor)
+        {
+            _context.Update(autor);
+            await _context.SaveChangesAsync();
+            return true;
+        }
         [HttpPost]
-        public bool AgregarNuevoRegistro(AutorLibro autor)
+        public async Task<bool> AgregarNuevoRegistro(AutorLibro autor)
         {
             _context.Add(autor);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return true;
         }
         [HttpDelete]
-        public bool BorrarNuevoRegistro(int IdAutorLibro)
+        public async Task<IActionResult> BorrarNuevoRegistro(int IdAutorLibro)
         {
-            return true;
+            var registro = _context.AutoresLibros.FirstOrDefault(x => x.IdAutorLibro == IdAutorLibro);
+            if (registro == null)
+                return NotFound();
+            return Ok();
         }
 
     }
